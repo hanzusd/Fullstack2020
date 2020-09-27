@@ -4,9 +4,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 
 const App = () => {
-  const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' }
-  ]) 
+  const [ persons, setPersons ] = useState([])
   const [ nameFilter, setNameFilter ] = useState('')
 
   const handleNameFilter = (event) => {

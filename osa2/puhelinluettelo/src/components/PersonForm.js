@@ -1,10 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const PersonForm = ({persons, setPersons}) => {
     const [ newName, setNewName ] = useState('')
     const [ newNumber, setNewNumber ] = useState('')
 
-    const handleNameChange = (event) => {
+    useEffect(() => {
+        axios
+          .get('http://localhost:3001/persons')
+          .then(response => {
+            setPersons(response.data)
+          })
+      }, [])
+
+    
+     const handleNameChange = (event) => {
         setNewName(event.target.value)
       }
     
@@ -31,7 +41,7 @@ const PersonForm = ({persons, setPersons}) => {
         setNewNumber('')
         }
       }
-
+     
       return (
     <form onSubmit={addName}>
           name: 
