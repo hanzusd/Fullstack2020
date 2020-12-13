@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Countries = ({countries, countrySearch}) => {
+const Countries = ({countries, countrySearch, setCountrySearch}) => {
   {var things = countries.filter(country => country.name.toLowerCase().includes(countrySearch.toLowerCase()))}
 
   if (things.length > 10) {
@@ -9,13 +9,13 @@ const Countries = ({countries, countrySearch}) => {
     if(things.length === 1) {
       return(<FullCountry country={things}/>)
     } else {
-    return(things.map(country => <Country key={country.name} country={country}/>))
+    return(things.map(country => <Country key={country.name} country={country} setCountrySearch={setCountrySearch}/>))
     }
   }
 }
 
-const Country = ({country}) => {
-  return(<div>{country.name}<br/></div>)
+const Country = ({country, setCountrySearch}) => {
+  return(<div>{country.name} <button onClick={() => setCountrySearch(country.name)}>show</button><br/></div>)
 }
 
 const FullCountry = ({country}) => {

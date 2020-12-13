@@ -15,7 +15,7 @@ const App = () => {
     <div>
       <h2>Countries search</h2>
       <Filter countrySearch={countrySearch} handleCountrySearch={handleCountrySearch}/>
-      <CountryForm countries={countries} setCountries={setCountries} countrySearch={countrySearch} />
+      <CountryForm countries={countries} setCountries={setCountries} countrySearch={countrySearch} setCountrySearch={setCountrySearch} />
     </div>
   )
 }
