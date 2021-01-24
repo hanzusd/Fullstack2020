@@ -11,7 +11,7 @@ const Persons = ({ persons, nameFilter, setPersons, setErrorMessage}) => {
 const Person = ({person, setPersons, setErrorMessage}) => {
     const deleteName = (id) => {
         var result = window.confirm("are you sure you want to delete " + person.name + "?");
-        if (result == true) {
+        if (result === true) {
          personService
             .exterminate(id)
             .then(() => 
