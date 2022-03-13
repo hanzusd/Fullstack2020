@@ -11,7 +11,6 @@ const PersonForm = ({persons, setPersons, setErrorMessage}) => {
           .then(initialP => {
             setPersons(initialP)
           })
-
       }, [])
     
      const handleNameChange = (event) => {
