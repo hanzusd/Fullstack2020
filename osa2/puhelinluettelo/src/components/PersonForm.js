@@ -32,7 +32,7 @@ const PersonForm = ({persons, setPersons, setErrorMessage}) => {
           return person.name === newName
         })
         if (similar.length === 1) {
-          var result = window.confirm(newName + "is already in the phone book are you sure you want to change their number");
+          var result = window.confirm(newName + " is already in the phonebook are you sure you want to change their number");
           if (result === true) {
             personService
             .replace(similar[0].id, nameObject)
