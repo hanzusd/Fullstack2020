@@ -47,6 +47,10 @@ const PersonForm = ({persons, setPersons, setErrorMessage}) => {
                 setNewName('')
                 setNewNumber('')
               }))
+              .catch(error => {
+                setErrorMessage({msg:error.response.data.error, error:true})
+                console.log(error.response.data)
+              })
             }
         } else {
         personService
@@ -59,6 +63,10 @@ const PersonForm = ({persons, setPersons, setErrorMessage}) => {
             }, 5000)
             setNewName('')
             setNewNumber('')
+          })
+          .catch(error => {
+            setErrorMessage({msg:error.response.data.error, error:true})
+            console.log(error.response.data)
           })
         }
       }
