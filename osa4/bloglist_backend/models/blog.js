@@ -1,4 +1,3 @@
-require('dotenv').config()
 const mongoose = require('mongoose')
 
 const blogSchema = new mongoose.Schema({
@@ -15,9 +14,6 @@ const blogSchema = new mongoose.Schema({
     type: Number
   }
 })
-
-const mongoUrl = process.env.MONGODB_URI
-mongoose.connect(mongoUrl)
 
 blogSchema.set('toJSON', {
     transform: (document, returnedObject) => {
