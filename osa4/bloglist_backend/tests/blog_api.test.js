@@ -48,8 +48,7 @@ test('POST successfully creates a new blog post', async () => {
     const newBlog = {
         title: "Test Blog",
         author: "Tester",
-        url: "testing url", 
-        likes: 8
+        url: "testing url"
     }
     
     await api
@@ -64,6 +63,39 @@ test('POST successfully creates a new blog post', async () => {
 
     expect(response.body).toHaveLength(initialBlogs.length + 1)
     expect(contents).toContain('Test Blog')
+})
+
+test('bad request without title or url', async () => {
+    const newBlog = {
+        author: "Bad Test"
+    }
+
+    await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+    const newBlogs = await api.get('/api/blogs')
+    expect(newBlogs.body).toHaveLength(initialBlogs.length)
+
+    const authors = newBlogs.body.map(a => a.author)
+    expect(authors).not.toContain(newBlog.author)
+})
+
+test('blog created has 0 likes', async () => {
+    const newBlog = {
+        title: "Test Blog",
+        author: "Tester",
+        url: "testing url"
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+      const response = await api.get('/api/blogs')
+      expect(response.body[2].likes).toEqual(0)
 })
 
 afterAll(() => {
