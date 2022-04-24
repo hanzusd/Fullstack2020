@@ -109,7 +109,26 @@ test('deleted note is deleted', async () => {
     const blogsAtEnd = await api.get('/api/blogs')
 
     expect(blogsAtEnd.body).toHaveLength(blogsAtStart.body.length-1)
-} )
+})
+
+test('updating a blog post works', async () => {
+    const changes = {
+        title: "MUN BLOGI"
+    }    
+    const allBlogs = await api.get('/api/blogs')
+    const blogToChange = allBlogs.body[0]
+
+    await api
+      .put(`/api/blogs/${blogToChange.id}`)
+      .send(changes)
+      .expect(200)
+
+    const endBlogs = await api.get('/api/blogs')
+    const titles = endBlogs.body.map(t => t.title)
+
+    expect(endBlogs.body).toHaveLength(allBlogs.body.length)
+    expect(titles).toContain('MUN BLOGI')
+}, 100000)
 
 afterAll(() => {
   mongoose.connection.close()

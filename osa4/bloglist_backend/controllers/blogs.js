@@ -19,7 +19,20 @@ blogsRouter.post('/', async (request, response) => {
     await Blog.findByIdAndDelete(request.params.id)
     response.status(204).end()
   })
-  
+
+  blogsRouter.put('/:id', async (request, response) => {
+    const result = await Blog.findByIdAndUpdate(
+      request.params.id,
+      request.body,
+      { new: true }
+    )
+    if (!result) {
+      response.status(404).end()
+    } else {
+      response.status(200).end()
+    }
+  })
+
   const errorHandler = (error, request, response, next) => {
     if (error.name === 'ValidationError') {
         return response.status(400).json({ error: error.message })
@@ -29,4 +42,4 @@ blogsRouter.post('/', async (request, response) => {
 
 blogsRouter.use(errorHandler)
   
-  module.exports = blogsRouter
+module.exports = blogsRouter

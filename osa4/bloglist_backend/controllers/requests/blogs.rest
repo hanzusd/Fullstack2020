@@ -1,1 +1,6 @@
-DELETE http://localhost:3003/api/blogs/6260338d812405a0cce9d998
+PUT http://localhost:3003/api/blogs/625d792cda9830632b53c9aa HTTP/1.1
+content-type: application/json
+
+{
+    "url":"tämä on url" 
+}
