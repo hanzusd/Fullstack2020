@@ -1,6 +1,9 @@
-PUT http://localhost:3003/api/blogs/625d792cda9830632b53c9aa HTTP/1.1
+POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
 
 {
-    "url":"tämä on url" 
+    "title":"title",
+    "author":"author",
+    "url":"url",
+    "userId":"62762356a50e2cd5f457d353"
 }
