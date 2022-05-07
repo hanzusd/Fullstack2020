@@ -4,7 +4,7 @@
   "description": "bloglist backend",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENv=production node index.js",
+    "start": "NODE_ENV=production node index.js",
     "test": "NODE_ENV=test jest --runInBand --verbose --forceExit"
   },
   "author": "Hannalotta Alenius",
