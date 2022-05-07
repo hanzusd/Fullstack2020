@@ -3,26 +3,26 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
+const tokenExtractor = (request, response, next) => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    request.token = authorization.substring(7)
+  }
+  next()
+}
+blogsRouter.use(tokenExtractor)
+
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({}).populate('user', {username:1, name: 1})
 
     response.json(blogs)
   })
-
-  const getTokenFrom = request => {
-    const authorization = request.get('authorization')
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-      return authorization.substring(7)
-    }
-    return null
-  }
   
 blogsRouter.post('/', async (request, response) => {
     console.log('request:', request.body)
     const body = request.body
-    
-    const token = getTokenFrom(request)
-    const decodedToken = jwt.verify(token, process.env.SECRET)
+
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
     if (!decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
@@ -44,8 +44,17 @@ blogsRouter.post('/', async (request, response) => {
   })
 
   blogsRouter.delete('/:id', async (request, response) => {
-    await Blog.findByIdAndDelete(request.params.id)
-    response.status(204).end()
+    const blog = await Blog.findById(request.params.id)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+    if(!blog.user) {
+      return response.status(401).json({ error: 'you can only delete your own blogs' })
+    } else if(blog.user.toString() === decodedToken.id) {
+      await Blog.findByIdAndDelete(request.params.id) 
+      response.status(204).end()
+    } else {
+    return response.status(401).json({ error: 'you can only delete your own blogs' })
+    }
   })
 
   blogsRouter.put('/:id', async (request, response) => {
