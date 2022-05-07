@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
+authorization: bearer eyJhbGciOiJIzzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbG8xIiwiaWQiOiI2Mjc2MjM1NmE1MGUyY2Q1ZjQ1N2QzNTMiLCJpYXQiOjE2NTE5Mjk2MDh9.F60Obdnzjota8kJLqfmDX3zNPbU4bUQo-lj9XGapQKk
 
 {
-    "title":"title",
-    "author":"author",
-    "url":"url",
-    "userId":"62762356a50e2cd5f457d353"
+    "title":"Solon blogi",
+    "author":"Solo",
+    "url":"Solon osoite"
 }
