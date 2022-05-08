@@ -6,6 +6,11 @@ const bcrypt = require('bcrypt')
 const User = require('../models/user')
 const Blog = require('../models/blog')
 
+const testUser = {
+  username:"testperson",
+  password: "salasana"
+}
+
 const initialBlogs = [
     {
         title: "Minun Blogi",
@@ -20,8 +25,20 @@ const initialBlogs = [
         likes: 3
     }
 ]
+
+let token = ''
+
 beforeEach(async () => {
     await Blog.deleteMany({})
+
+    await api
+      .post('/api/users')
+      .send(testUser)
+    const login = await api
+      .post('/api/login')
+      .send(testUser)
+    token = 'Bearer ' + login.body.token
+
     let blogObject = new Blog(initialBlogs[0])
     await blogObject.save()
     blogObject = new Blog(initialBlogs[1])
@@ -55,6 +72,7 @@ test('POST successfully creates a new blog post', async () => {
     
     await api
       .post('/api/blogs')
+      .set('authorization', token)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -74,6 +92,7 @@ test('bad request without title or url', async () => {
 
     await api
     .post('/api/blogs')
+    .set('authorization', token)
     .send(newBlog)
     .expect(400)
 
@@ -92,6 +111,7 @@ test('blog created has 0 likes', async () => {
     }
     await api
       .post('/api/blogs')
+      .set('authorization', token)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -102,15 +122,27 @@ test('blog created has 0 likes', async () => {
 
 test('deleted note is deleted', async () => {
     const blogsAtStart = await api.get('/api/blogs')
-    const blogToDelete = blogsAtStart.body[0]
+
+    const blogToDelete = {
+        title: "Delete Blog",
+        author: "Deleter",
+        url: "deleting blog url"
+    }
+
+    const blog = await api
+      .post('/api/blogs')
+      .set('authorization', token)
+      .send(blogToDelete)
+      .expect(201)
 
     await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
+      .delete(`/api/blogs/${blog.body.id}`)
+      .set('authorization', token)
       .expect(204)
     
     const blogsAtEnd = await api.get('/api/blogs')
 
-    expect(blogsAtEnd.body).toHaveLength(blogsAtStart.body.length-1)
+    expect(blogsAtEnd.body).toHaveLength(blogsAtStart.body.length)
 })
 
 test('updating a blog post works', async () => {

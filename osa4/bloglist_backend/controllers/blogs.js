@@ -10,7 +10,6 @@ const tokenExtractor = (request, response, next) => {
   }
   next()
 }
-blogsRouter.use(tokenExtractor)
 
 const userExtractor = async (request, response, next) => {
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
@@ -21,13 +20,26 @@ const userExtractor = async (request, response, next) => {
   next()
 }
 
-blogsRouter.use(userExtractor)
-
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({}).populate('user', {username:1, name: 1})
-
     response.json(blogs)
   })
+
+  blogsRouter.put('/:id', async (request, response) => {
+    const result = await Blog.findByIdAndUpdate(
+      request.params.id,
+      request.body,
+      { new: true }
+    )
+    if (!result) {
+      response.status(404).end()
+    } else {
+      response.status(200).end()
+    }
+  })
+
+  blogsRouter.use(tokenExtractor)
+  blogsRouter.use(userExtractor)
   
 blogsRouter.post('/', async (request, response) => {
     console.log('request:', request.body)
@@ -60,19 +72,6 @@ blogsRouter.post('/', async (request, response) => {
       response.status(204).end()
     } else {
     return response.status(401).json({ error: 'you can only delete your own blogs' })
-    }
-  })
-
-  blogsRouter.put('/:id', async (request, response) => {
-    const result = await Blog.findByIdAndUpdate(
-      request.params.id,
-      request.body,
-      { new: true }
-    )
-    if (!result) {
-      response.status(404).end()
-    } else {
-      response.status(200).end()
     }
   })
 
