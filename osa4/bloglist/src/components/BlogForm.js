@@ -32,7 +32,8 @@ const BlogForm = ( { blogs, setBlogs, setErrorMessage, setAddBlogVisible } ) => 
         title: newTitle,
         author: newAuthor,
         url: newURL,
-        likes: 0
+        likes: 0,
+        show: false
       }
   
       blogsService

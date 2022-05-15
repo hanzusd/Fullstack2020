@@ -6,9 +6,9 @@ import blogsService from './services/blogs'
 
 const App = () => {
   const [ blogs, setBlogs ] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [user, setUser] = useState(null)
-  const [addBlogVisible, setAddBlogVisible] = useState(false)
+  const [ errorMessage, setErrorMessage ] = useState(null)
+  const [ user, setUser ] = useState(null)
+  const [ addBlogVisible, setAddBlogVisible ] = useState(false)
 
   const hideWhenVisible = { display: addBlogVisible ? 'none' : '' }
   const showWhenVisible = { display: addBlogVisible ? '' : 'none' }
