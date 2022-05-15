@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import blogsService from '../services/blogs'
 
-const BlogForm = ( {blogs, setBlogs} ) => {
+const BlogForm = ( { blogs, setBlogs, setErrorMessage } ) => {
     const [ newTitle, setNewTitle ] = useState('')
     const [ newAuthor, setNewAuthor ] = useState('')
     const [ newURL, setNewURL ] = useState('')
@@ -39,6 +39,10 @@ const BlogForm = ( {blogs, setBlogs} ) => {
       .create(blogObject)
       .then(returnBlog => {
         setBlogs(blogs.concat(returnBlog))
+        setErrorMessage({msg: "a new blog "+newTitle+" by "+newAuthor+" added", error:false})
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         setNewTitle('')
         setNewAuthor('')
         setNewURL('')
