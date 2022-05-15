@@ -10,6 +10,9 @@ const BlogForm = ( { blogs, setBlogs, setErrorMessage, setAddBlogVisible } ) => 
       blogsService
         .getAll()
         .then(initialP => {
+          initialP.sort((a, b) => {
+            return b.likes-a.likes
+        })
           setBlogs(initialP)
         })
     }, [])

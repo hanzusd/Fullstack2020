@@ -1,7 +1,7 @@
 import blogsService from '../services/blogs'
 import React, { useState, useEffect } from 'react'
 
-const Blog = ( {blog, blogs} ) => {
+const Blog = ( {blog, blogs, sortBlogsbyLikes} ) => {
   const [ visible, setVisible ] = useState(blog.show)
   const [ likes, setLikes ] = useState(blog.likes)
 
@@ -26,10 +26,11 @@ const Blog = ( {blog, blogs} ) => {
     var liked = blogs.find(x => x.id === id)
     liked.likes = liked.likes + 1
     setLikes(liked.likes)
+    sortBlogsbyLikes()
 
     blogsService
     .replace(id, liked)
-    }
+  }
 
     return (
     <div style={blogStyle}>
