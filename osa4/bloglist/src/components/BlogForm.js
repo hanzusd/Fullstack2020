@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import blogsService from '../services/blogs'
 
-const BlogForm = ( { blogs, setBlogs, setErrorMessage } ) => {
+const BlogForm = ( { blogs, setBlogs, setErrorMessage, setAddBlogVisible } ) => {
     const [ newTitle, setNewTitle ] = useState('')
     const [ newAuthor, setNewAuthor ] = useState('')
     const [ newURL, setNewURL ] = useState('')
@@ -63,7 +63,7 @@ const BlogForm = ( { blogs, setBlogs, setErrorMessage } ) => {
         onChange={handleURLChange}
       />
       </div>
-      <button type="submit">save</button>
+      <button type="submit" onClick={() => setAddBlogVisible(false)}>save</button>
     </form>
     )
   }

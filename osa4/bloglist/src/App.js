@@ -8,6 +8,10 @@ const App = () => {
   const [ blogs, setBlogs ] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
+  const [addBlogVisible, setAddBlogVisible] = useState(false)
+
+  const hideWhenVisible = { display: addBlogVisible ? 'none' : '' }
+  const showWhenVisible = { display: addBlogVisible ? '' : 'none' }
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedAppUser')
@@ -21,6 +25,7 @@ const App = () => {
     return (
         <div>
           <Notification message={errorMessage} />
+
           {user === null ?
           <div>
           <h1>Login</h1>
@@ -30,8 +35,16 @@ const App = () => {
             window.localStorage.removeItem('loggedAppUser')
             setUser(null)
           }}>logout </button>
-          <h1>Add a blog</h1>
-          <BlogForm blogs={blogs} setBlogs={setBlogs} setErrorMessage={setErrorMessage}/>
+
+          <div style={hideWhenVisible}>
+            <button onClick={() => setAddBlogVisible(true)}>add new blog</button>
+          </div>
+
+          <div style={showWhenVisible}>
+            <h1>Add a blog</h1>
+            <BlogForm blogs={blogs} setBlogs={setBlogs} setErrorMessage={setErrorMessage} setAddBlogVisible={setAddBlogVisible}/>
+            <button onClick={() => setAddBlogVisible(false)}>cancel</button>
+          </div>
           <h1>Plokit</h1>
           <AllBlogs blogs={blogs} setBlogs={setBlogs}/>
           </div>
