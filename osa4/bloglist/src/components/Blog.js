@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 
 const Blog = ( {blog, blogs} ) => {
   const [ visible, setVisible ] = useState(blog.show)
+  const [ likes, setLikes ] = useState(blog.likes)
 
   const blogStyle = {
     paddingTop: 10,
@@ -21,15 +22,15 @@ const Blog = ( {blog, blogs} ) => {
     .replace(id, toggled)
     console.log('importance of ' + toggled.title + ' needs to be toggled')
   }
-    /* const addLike = (id) => {
-      var liked = blogs.find(x => x.id === id)
-      console.log(liked)
-      blogsService
-      .replace(liked.likes, 4)
-      .then(() => blogsService
-      .getAll()
-      )
-    } */
+  const addLike = (id) => {
+    var liked = blogs.find(x => x.id === id)
+    liked.likes = liked.likes + 1
+    setLikes(liked.likes)
+
+    blogsService
+    .replace(id, liked)
+    }
+
     return (
     <div style={blogStyle}>
       <div>
@@ -41,7 +42,7 @@ const Blog = ( {blog, blogs} ) => {
         Title: {blog.title} <br/> 
         Author: {blog.author}<br/> 
         URL: {blog.url} <br/> 
-        Likes: {blog.likes} <button>like</button><br/>
+        Likes: {likes} <button onClick={() => addLike(blog.id)}>like</button><br/>
      </div> 
       }
       <button onClick={() => toggleShow(blog.id)}>view</button><br/>
