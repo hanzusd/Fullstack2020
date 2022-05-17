@@ -29,7 +29,7 @@ const BlogForm = ( { blogs, setBlogs, setErrorMessage, setAddBlogVisible } ) => 
       setNewURL(event.target.value)
     }
   
-    const addBlog = (event) => {
+    const addBlog = async (event) => {
       event.preventDefault()
       const blogObject = {
         title: newTitle,
@@ -39,19 +39,19 @@ const BlogForm = ( { blogs, setBlogs, setErrorMessage, setAddBlogVisible } ) => 
         show: false
       }
   
-      blogsService
-      .create(blogObject)
-      .then(returnBlog => {
-        setBlogs(blogs.concat(returnBlog))
-        setErrorMessage({msg: "a new blog "+newTitle+" by "+newAuthor+" added", error:false})
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-        setNewTitle('')
-        setNewAuthor('')
-        setNewURL('')
-      })
+      const returnBlog = await blogsService.create(blogObject)
+      setBlogs(blogs.concat(returnBlog))
+      const updateBlogs = await blogsService.getAll()
+      setBlogs(updateBlogs)
+      setErrorMessage({msg: "a new blog " + newTitle + " by " + newAuthor + " added", error:false})
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+      setNewTitle('')
+      setNewAuthor('')
+      setNewURL('')
     }
+  
     return (
       <form onSubmit={addBlog}>
       <div>Title:  <input 
@@ -71,5 +71,6 @@ const BlogForm = ( { blogs, setBlogs, setErrorMessage, setAddBlogVisible } ) => 
     </form>
     )
   }
+
 
   export default BlogForm

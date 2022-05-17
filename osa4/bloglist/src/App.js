@@ -46,7 +46,7 @@ const App = () => {
             <button onClick={() => setAddBlogVisible(false)}>cancel</button>
           </div>
           <h1>Plokit</h1>
-          <AllBlogs blogs={blogs} setBlogs={setBlogs}/>
+          <AllBlogs blogs={blogs} setBlogs={setBlogs} setErrorMessage={setErrorMessage} user={user}/>
           </div>
          }
         </div>
