@@ -13,13 +13,16 @@ const Blog = ( {blog, blogs, user, setBlogs, sortBlogsbyLikes, setErrorMessage} 
     marginBottom: 5
   }
 
-  const toggleShow = (id) => {
+  const toggleShow = async (id) => {
     var toggled= blogs.find(x => x.id === id)
     toggled.show = !toggled.show
     setVisible(toggled.show)
 
-    blogsService
+    await blogsService
     .replace(id, toggled)
+
+    const updateBlogs = await blogsService.getAll()
+    sortBlogsbyLikes(updateBlogs)
   }
 
   const addLike = async (id) => {
