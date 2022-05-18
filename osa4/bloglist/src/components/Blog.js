@@ -1,7 +1,7 @@
 import blogsService from '../services/blogs'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
-const Blog = ( {blog, blogs, user, setBlogs, sortBlogsbyLikes, setErrorMessage} ) => {
+const Blog = ( { blog, blogs, user, sortBlogsbyLikes, setErrorMessage } ) => {
   const [ visible, setVisible ] = useState(blog.show)
   const [ likes, setLikes ] = useState(blog.likes)
 
@@ -18,8 +18,7 @@ const Blog = ( {blog, blogs, user, setBlogs, sortBlogsbyLikes, setErrorMessage} 
     toggled.show = !toggled.show
     setVisible(toggled.show)
 
-    await blogsService
-    .replace(id, toggled)
+    await blogsService.replace(id, toggled)
 
     const updateBlogs = await blogsService.getAll()
     sortBlogsbyLikes(updateBlogs)
@@ -37,45 +36,45 @@ const Blog = ( {blog, blogs, user, setBlogs, sortBlogsbyLikes, setErrorMessage} 
   }
 
   const deleteBlog = async (id) => {
-    var result = window.confirm("are you sure you want to delete " + blog.title + " by "+ blog.author +"?");
+    var result = window.confirm('are you sure you want to delete ' + blog.title + 'by '+ blog.author +'?')
     if (result === true) {
-    try {
-      await blogsService.exterminate(id)
-    } catch (error) {
-      setErrorMessage({msg: blog.title + " has already been removed", error:true})
+      try {
+        await blogsService.exterminate(id)
+      } catch (error) {
+        setErrorMessage({ msg: blog.title + ' has already been removed', error:true })
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+      const initialB = await blogsService.getAll()
+      setErrorMessage({ msg: blog.title + ' has been deleted', error:false })
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
+      sortBlogsbyLikes(initialB)
     }
-         
-     const initialB = await blogsService.getAll()
-     setErrorMessage({msg: blog.title + " has been deleted", error:false})
-     setTimeout(() => {
-       setErrorMessage(null)
-     }, 5000)
-     sortBlogsbyLikes(initialB)
-    }
-}
+  }
 
-    return (
+  return (
     <div style={blogStyle}>
       <div>
-      { visible ? 
-      <div>
-        Title: {blog.title} <button onClick={() => toggleShow(blog.id)}>view</button> <br/> 
-      </div> :
-      <div > 
-        Title: {blog.title} <button onClick={() => toggleShow(blog.id)}>hide</button> <br/> 
-        Author: {blog.author}<br/> 
-        URL: {blog.url} <br/> 
+        { visible ?
+          <div>
+        Title: {blog.title} <button onClick={() => toggleShow(blog.id)}>view</button> <br/>
+          </div> :
+          <div>
+        Title: {blog.title} <button onClick={() => toggleShow(blog.id)}>hide</button> <br/>
+        Author: {blog.author}<br/>
+        URL: {blog.url} <br/>
         Likes: {likes} <button onClick={() => addLike(blog.id)}>like</button><br/>
-        {blog.user.username === user.username ?
-        <button className="button2" onClick={() => deleteBlog(blog.id)}>delete blog</button>:
-        <div></div>
-      }
-     </div> 
-      }
-      </div></div>)
-  }
+            {blog.user.username === user.username ?
+              <button className="button2" onClick={() => deleteBlog(blog.id)}>delete blog</button>:
+              <div></div>
+            }
+          </div>
+        }
+      </div></div>
+  )
+}
 
 export default Blog

@@ -22,15 +22,15 @@ const App = () => {
     }
   }, [])
 
-    return (
-        <div>
-          <Notification message={errorMessage} />
+  return (
+    <div>
+      <Notification message={errorMessage} />
 
-          {user === null ?
-          <div>
+      {user === null ?
+        <div>
           <h1>Login</h1>
           <LoginForm user={user} setUser={setUser} setErrorMessage={setErrorMessage}/></div> :
-          <div>
+        <div>
           You are logged in as {user.name} <button onClick={() => {
             window.localStorage.removeItem('loggedAppUser')
             setUser(null)
@@ -47,10 +47,10 @@ const App = () => {
           </div>
           <h1>Plokit</h1>
           <AllBlogs blogs={blogs} setBlogs={setBlogs} setErrorMessage={setErrorMessage} user={user}/>
-          </div>
-         }
         </div>
-      )
+      }
+    </div>
+  )
 }
 
 const Notification = ({ message }) => {
@@ -65,10 +65,9 @@ const Notification = ({ message }) => {
     )
   } else {
     return (
-     <div className="success">
-       {message.msg}
-      </div>
-  )}
+      <div className="success">
+        {message.msg}
+      </div>)}
 }
 
 export default App
