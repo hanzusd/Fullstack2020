@@ -1,7 +1,7 @@
-import blogsService from '../services/blogs'
 import React, { useState } from 'react'
+import blogsService from '../services/blogs'
 
-const Blog = ( { blog, blogs, user, sortBlogsbyLikes, setErrorMessage } ) => {
+const Blog = ( { blog, blogs, user, sortBlogsbyLikes, setErrorMessage, toggleShow } ) => {
   const [ visible, setVisible ] = useState(blog.show)
   const [ likes, setLikes ] = useState(blog.likes)
 
@@ -13,7 +13,7 @@ const Blog = ( { blog, blogs, user, sortBlogsbyLikes, setErrorMessage } ) => {
     marginBottom: 5
   }
 
-  const toggleShow = async (id) => {
+  /* const toggleShow = async (id) => {
     var toggled= blogs.find(x => x.id === id)
     toggled.show = !toggled.show
     setVisible(toggled.show)
@@ -22,7 +22,7 @@ const Blog = ( { blog, blogs, user, sortBlogsbyLikes, setErrorMessage } ) => {
 
     const updateBlogs = await blogsService.getAll()
     sortBlogsbyLikes(updateBlogs)
-  }
+  } */
 
   const addLike = async (id) => {
     var liked = blogs.find(x => x.id === id)
@@ -56,14 +56,18 @@ const Blog = ( { blog, blogs, user, sortBlogsbyLikes, setErrorMessage } ) => {
   }
 
   return (
-    <div style={blogStyle}>
-      <div>
-        { visible ?
+    <div style={blogStyle} className='blog'>
+      <div >
+        { !visible ?
           <div>
-        Title: {blog.title} <button onClick={() => toggleShow(blog.id)}>view</button> <br/>
+        Title: {blog.title} <button buttonLabel='view' onClick={() => {
+              toggleShow(blog.id)
+              setVisible(!visible)}}>view</button> <br/>
           </div> :
           <div>
-        Title: {blog.title} <button onClick={() => toggleShow(blog.id)}>hide</button> <br/>
+        Title: {blog.title} <button onClick={() => {
+              toggleShow(blog.id)
+              setVisible(!visible)}}>hide</button> <br/>
         Author: {blog.author}<br/>
         URL: {blog.url} <br/>
         Likes: {likes} <button onClick={() => addLike(blog.id)}>like</button><br/>
