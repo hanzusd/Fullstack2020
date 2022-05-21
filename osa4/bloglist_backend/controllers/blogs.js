@@ -22,6 +22,9 @@ const userExtractor = async (request, response, next) => {
 
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({}).populate('user', {username:1, name: 1})
+    blogs.sort((a, b) => {
+      return b.likes-a.likes
+    })
     response.json(blogs)
   })
 
