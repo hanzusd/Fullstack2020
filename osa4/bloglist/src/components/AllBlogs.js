@@ -24,9 +24,19 @@ const Blogs = ( { blogs, setBlogs, sortBlogsbyLikes, setErrorMessage, user } ) =
     const updateBlogs = await blogsService.getAll()
     sortBlogsbyLikes(updateBlogs)
   }
+  const addLike = async (id) => {
+    var liked = blogs.find(x => x.id === id)
+    liked.likes = liked.likes + 1
+
+    await blogsService.replace(id, liked)
+
+    const updateBlogs = await blogsService.getAll()
+    sortBlogsbyLikes(updateBlogs)
+  }
+
   var plokit = blogs.map(plog => <Blog key={plog.id} blog = {plog} blogs = {blogs}
     sortBlogsbyLikes={sortBlogsbyLikes} setErrorMessage={setErrorMessage} setBlogs={setBlogs}
-    user={user} toggleShow={toggleShow}/>)
+    user={user} toggleShow={toggleShow} addLike={addLike}/>)
   return (plokit)
 }
 

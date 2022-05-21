@@ -6,12 +6,24 @@ import blogsService from './services/blogs'
 
 const App = () => {
   const [ blogs, setBlogs ] = useState([])
-  const [ errorMessage, setErrorMessage ] = useState(null)
   const [ user, setUser ] = useState(null)
+
+  const [ errorMessage, setErrorMessage ] = useState(null)
   const [ addBlogVisible, setAddBlogVisible ] = useState(false)
 
   const hideWhenVisible = { display: addBlogVisible ? 'none' : '' }
   const showWhenVisible = { display: addBlogVisible ? '' : 'none' }
+
+  useEffect(() => {
+    blogsService
+      .getAll()
+      .then(initialP => {
+        initialP.sort((a, b) => {
+          return b.likes-a.likes
+        })
+        setBlogs(initialP)
+      })
+  }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedAppUser')
@@ -21,6 +33,25 @@ const App = () => {
       blogsService.setToken(user.token)
     }
   }, [])
+
+  const createBlog = async ({ title, author, url }) => {
+    const blogObject = {
+      title: title,
+      author: author,
+      url: url,
+      likes: 0,
+      show: false
+    }
+
+    const returnBlog = await blogsService.create(blogObject)
+    setBlogs(blogs.concat(returnBlog))
+    const updateBlogs = await blogsService.getAll()
+    setBlogs(updateBlogs)
+    setErrorMessage({ msg: 'a new blog ' + title + ' by ' + author + ' added', error:false })
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
 
   return (
     <div>
@@ -42,7 +73,8 @@ const App = () => {
 
           <div style={showWhenVisible}>
             <h1>Add a blog</h1>
-            <BlogForm blogs={blogs} setBlogs={setBlogs} setErrorMessage={setErrorMessage} setAddBlogVisible={setAddBlogVisible}/>
+            <BlogForm blogs={blogs} setBlogs={setBlogs}
+              setAddBlogVisible={setAddBlogVisible} createBlog={createBlog}/>
             <button onClick={() => setAddBlogVisible(false)}>cancel</button>
           </div>
           <h1>Plokit</h1>

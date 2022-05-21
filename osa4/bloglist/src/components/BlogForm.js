@@ -1,21 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import blogsService from '../services/blogs'
+import React, { useState } from 'react'
 
-const BlogForm = ( { blogs, setBlogs, setErrorMessage, setAddBlogVisible } ) => {
+const BlogForm = ( { setAddBlogVisible, createBlog } ) => {
   const [ newTitle, setNewTitle ] = useState('')
   const [ newAuthor, setNewAuthor ] = useState('')
   const [ newURL, setNewURL ] = useState('')
-
-  useEffect(() => {
-    blogsService
-      .getAll()
-      .then(initialP => {
-        initialP.sort((a, b) => {
-          return b.likes-a.likes
-        })
-        setBlogs(initialP)
-      })
-  }, [])
 
   const handleTitleChange = (event) => {
     setNewTitle(event.target.value)
@@ -29,24 +17,13 @@ const BlogForm = ( { blogs, setBlogs, setErrorMessage, setAddBlogVisible } ) => 
     setNewURL(event.target.value)
   }
 
-  const addBlog = async (event) => {
+  const addBlog = (event) => {
     event.preventDefault()
-    const blogObject = {
+    createBlog({
       title: newTitle,
       author: newAuthor,
-      url: newURL,
-      likes: 0,
-      show: false
-    }
-
-    const returnBlog = await blogsService.create(blogObject)
-    setBlogs(blogs.concat(returnBlog))
-    const updateBlogs = await blogsService.getAll()
-    setBlogs(updateBlogs)
-    setErrorMessage({ msg: 'a new blog ' + newTitle + ' by ' + newAuthor + ' added', error:false })
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 5000)
+      url: newURL
+    })
     setNewTitle('')
     setNewAuthor('')
     setNewURL('')
@@ -57,14 +34,17 @@ const BlogForm = ( { blogs, setBlogs, setErrorMessage, setAddBlogVisible } ) => 
       <div>Title:  <input
         value={newTitle}
         onChange={handleTitleChange}
+        placeholder='this is title'
       /></div><div>
       Author: <input
           value={newAuthor}
           onChange={handleAuthorChange}
+          placeholder='this is author'
         /></div><div>
       Blog URL: <input
           value={newURL}
           onChange={handleURLChange}
+          placeholder='this is url'
         />
       </div>
       <button type="submit" onClick={() => setAddBlogVisible(false)}>save</button>

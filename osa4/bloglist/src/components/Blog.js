@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogsService from '../services/blogs'
 
-const Blog = ( { blog, blogs, user, sortBlogsbyLikes, setErrorMessage, toggleShow } ) => {
+const Blog = ( { blog, user, sortBlogsbyLikes, setErrorMessage, toggleShow, addLike } ) => {
   const [ visible, setVisible ] = useState(blog.show)
   const [ likes, setLikes ] = useState(blog.likes)
 
@@ -24,7 +24,7 @@ const Blog = ( { blog, blogs, user, sortBlogsbyLikes, setErrorMessage, toggleSho
     sortBlogsbyLikes(updateBlogs)
   } */
 
-  const addLike = async (id) => {
+  /*   const addLike = async (id) => {
     var liked = blogs.find(x => x.id === id)
     liked.likes = liked.likes + 1
     setLikes(liked.likes)
@@ -33,7 +33,7 @@ const Blog = ( { blog, blogs, user, sortBlogsbyLikes, setErrorMessage, toggleSho
 
     const updateBlogs = await blogsService.getAll()
     sortBlogsbyLikes(updateBlogs)
-  }
+  } */
 
   const deleteBlog = async (id) => {
     var result = window.confirm('are you sure you want to delete ' + blog.title + 'by '+ blog.author +'?')
@@ -70,7 +70,9 @@ const Blog = ( { blog, blogs, user, sortBlogsbyLikes, setErrorMessage, toggleSho
               setVisible(!visible)}}>hide</button> <br/>
         Author: {blog.author}<br/>
         URL: {blog.url} <br/>
-        Likes: {likes} <button onClick={() => addLike(blog.id)}>like</button><br/>
+        Likes: {likes} <button buttonLabel='like' onClick={() => {
+              addLike(blog.id)
+              setLikes(blog.likes)}}>like</button><br/>
             {blog.user.username === user.username ?
               <button className="button2" onClick={() => deleteBlog(blog.id)}>delete blog</button>:
               <div></div>
