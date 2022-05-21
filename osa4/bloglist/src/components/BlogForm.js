@@ -32,22 +32,25 @@ const BlogForm = ( { setAddBlogVisible, createBlog } ) => {
   return (
     <form onSubmit={addBlog}>
       <div>Title:  <input
+        id='title'
         value={newTitle}
         onChange={handleTitleChange}
         placeholder='this is title'
       /></div><div>
       Author: <input
+          id='author'
           value={newAuthor}
           onChange={handleAuthorChange}
           placeholder='this is author'
         /></div><div>
       Blog URL: <input
+          id='url'
           value={newURL}
           onChange={handleURLChange}
           placeholder='this is url'
         />
       </div>
-      <button type="submit" onClick={() => setAddBlogVisible(false)}>save</button>
+      <button id="submit-button" type="submit" onClick={() => setAddBlogVisible(false)}>save</button>
     </form>
   )
 }

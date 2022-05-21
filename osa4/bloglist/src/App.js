@@ -15,22 +15,19 @@ const App = () => {
   const showWhenVisible = { display: addBlogVisible ? '' : 'none' }
 
   useEffect(() => {
-    blogsService
-      .getAll()
-      .then(initialP => {
-        initialP.sort((a, b) => {
-          return b.likes-a.likes
-        })
-        setBlogs(initialP)
-      })
-  }, [])
-
-  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogsService.setToken(user.token)
+      blogsService
+        .getAll()
+        .then(initialP => {
+          initialP.sort((a, b) => {
+            return b.likes-a.likes
+          })
+          setBlogs(initialP)
+        })
     }
   }, [])
 
@@ -68,7 +65,7 @@ const App = () => {
           }}>logout </button>
 
           <div style={hideWhenVisible}>
-            <button onClick={() => setAddBlogVisible(true)}>add new blog</button>
+            <button id='visible-button' onClick={() => setAddBlogVisible(true)}>add new blog</button>
           </div>
 
           <div style={showWhenVisible}>

@@ -13,28 +13,6 @@ const Blog = ( { blog, user, sortBlogsbyLikes, setErrorMessage, toggleShow, addL
     marginBottom: 5
   }
 
-  /* const toggleShow = async (id) => {
-    var toggled= blogs.find(x => x.id === id)
-    toggled.show = !toggled.show
-    setVisible(toggled.show)
-
-    await blogsService.replace(id, toggled)
-
-    const updateBlogs = await blogsService.getAll()
-    sortBlogsbyLikes(updateBlogs)
-  } */
-
-  /*   const addLike = async (id) => {
-    var liked = blogs.find(x => x.id === id)
-    liked.likes = liked.likes + 1
-    setLikes(liked.likes)
-
-    await blogsService.replace(id, liked)
-
-    const updateBlogs = await blogsService.getAll()
-    sortBlogsbyLikes(updateBlogs)
-  } */
-
   const deleteBlog = async (id) => {
     var result = window.confirm('are you sure you want to delete ' + blog.title + 'by '+ blog.author +'?')
     if (result === true) {
@@ -60,21 +38,21 @@ const Blog = ( { blog, user, sortBlogsbyLikes, setErrorMessage, toggleShow, addL
       <div >
         { !visible ?
           <div>
-        Title: {blog.title} <button buttonLabel='view' onClick={() => {
-              toggleShow(blog.id)
+        Title: {blog.title} <button id='view-button' buttonLabel='view' onClick={async () => {
+              await toggleShow(blog.id)
               setVisible(!visible)}}>view</button> <br/>
           </div> :
           <div>
-        Title: {blog.title} <button onClick={() => {
-              toggleShow(blog.id)
+        Title: {blog.title} <button onClick={async () => {
+              await toggleShow(blog.id)
               setVisible(!visible)}}>hide</button> <br/>
         Author: {blog.author}<br/>
         URL: {blog.url} <br/>
-        Likes: {likes} <button buttonLabel='like' onClick={() => {
+        Likes: {likes} <button id='like-button' buttonLabel='like' onClick={() => {
               addLike(blog.id)
               setLikes(blog.likes)}}>like</button><br/>
             {blog.user.username === user.username ?
-              <button className="button2" onClick={() => deleteBlog(blog.id)}>delete blog</button>:
+              <button id='delete-button' className="button2" onClick={() => deleteBlog(blog.id)}>delete blog</button>:
               <div></div>
             }
           </div>
