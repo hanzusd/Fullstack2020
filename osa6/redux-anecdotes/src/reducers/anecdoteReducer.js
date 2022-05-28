@@ -25,53 +25,8 @@ const anecdoteSlice = createSlice({
   name: 'anecdotes',
   initialState,
   reducers: {
-  voting(state, action) {
-    const id = action.payload
-    const voteForAnecdote = state.find(a => a.id === id)
-    const votedAnecdote = {
-      ...voteForAnecdote,
-      votes: voteForAnecdote.votes + 1
-    }
-    state = state.map(an =>
-      an.id !== id ? an : votedAnecdote)
-    state.sort((a, b) => {
-      return b.votes-a.votes
-    })
-    return state
-  },
-  createAnecdote(state, action) {
-    const anecdote = action.payload
-    state.push({
-      content: anecdote,
-      votes: 0,
-      id: getId()
-    })
-  }
-},  
-})
-/* export const createAnecdote = (new_anecdote) => {
-  return {
-    type: 'create',
-    data: {
-      content: new_anecdote,
-      votes: 0, 
-      id: getId()
-    }
-  }
-} */
-
-/* export const voting = (id) => {
-  return ({
-    type: 'vote',
-    data: { id }
-  })
-} */
-
-/* export const reducer = (state = initialState, action) => {
-  state=[...state]
-  switch (action.type) {
-    case 'vote': {
-      const id = action.data.id
+    voting(state, action) {
+      const id = action.payload
       const voteForAnecdote = state.find(a => a.id === id)
       const votedAnecdote = {
         ...voteForAnecdote,
@@ -83,12 +38,17 @@ const anecdoteSlice = createSlice({
         return b.votes-a.votes
       })
       return state
-    } case 'create': {
-      return state.concat(action.data)
-    }
-    default: return state
-  }
-} */
+    },
+    createAnecdote(state, action) {
+      const anecdote = action.payload
+      state.push({
+        content: anecdote,
+        votes: 0,
+        id: getId()
+      })
+    },
+  } 
+})
 
-export const { createAnecdote, voting } = anecdoteSlice.actions
+export const { createAnecdote, voting, showAnecdotes } = anecdoteSlice.actions
 export default anecdoteSlice.reducer
