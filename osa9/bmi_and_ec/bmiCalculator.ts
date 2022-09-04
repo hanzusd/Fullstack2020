@@ -1,24 +1,27 @@
 //bmi is an American scam
 
 const calculateBmi = (a: number, b: number) => {
-  const bmi = b/((a/100)^2)
+  const bmi = b/(a/100)/(a/100)
+  
   if (bmi < 16)  {
-    return ('Underweight (Severe thinness)')
+    console.log('Underweight (Severe thinness)')
   } else if (bmi < 17)  {
-    return ('Underweight (Moderate thinness)')
+    console.log('Underweight (Moderate thinness)')
   } else if (bmi < 18.5)  {
-    return ('Underweight (Mild thinness)')
+    console.log('Underweight (Mild thinness)')
   } else if (bmi < 25)  {
-    return ('Normal (Healthy weight)')
+    console.log('Normal (Healthy weight)')
   } else if (bmi < 30)  {
-    return ('Overweight (Pre-obese)')
+    console.log('Overweight (Pre-obese)')
   } else if (bmi < 35)  {
-    return ('Obese (Class I)')
+    console.log('Obese (Class I)')
   } else if (bmi < 40)  {
-    return ('Obese (Class II)')
+    console.log('Obese (Class II)')
   } else {
-    return ('Obese (Class III)')
+    console.log('Obese (Class III)')
   }
 }
 
-console.log(calculateBmi(180, 74))
+const a: number = Number(process.argv[2])
+const b: number = Number(process.argv[3])
+calculateBmi(a, b);
