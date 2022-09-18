@@ -4,7 +4,7 @@ import { DiagnoseEntry  } from '../types';
  
 const diagnoses: Array<DiagnoseEntry> = diagnoseData;
 
-const getEntries = (): Array<DiagnoseEntry> => {
+const getDiagnoses = (): Array<DiagnoseEntry> => {
   return diagnoses;
 };
 
@@ -13,6 +13,6 @@ const addDiagnose = () => {
 };
 
 export default {
-  getEntries,
+  getDiagnoses,
   addDiagnose
 };
