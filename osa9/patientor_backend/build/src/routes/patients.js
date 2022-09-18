@@ -7,8 +7,9 @@ const express_1 = __importDefault(require("express"));
 const patientService_1 = __importDefault(require("../services/patientService"));
 const router = express_1.default.Router();
 router.get('/', (_req, res) => {
+    const info = patientService_1.default.getNonSensitivePatientInfo();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    res.send(patientService_1.default.getNonSensitivePatientInfo());
+    res.send(info);
 });
 router.post('/', (_req, res) => {
     res.send('Saving a patient!');
