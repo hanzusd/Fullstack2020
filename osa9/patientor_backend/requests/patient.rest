@@ -1,1 +1,10 @@
-GET http://localhost:3001/api/patients
+POST http://localhost:3001/api/patients HTTP/1.1
+content-type: application/json
+
+{
+  "name": "Testi Persoona",
+  "dateOfBirth": "2009-03-03",
+  "ssn": "030309-666X",
+  "gender": "I'd rather not say",
+  "occupation": "secret"
+}

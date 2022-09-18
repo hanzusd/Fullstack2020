@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -11,7 +12,15 @@ router.get('/', (_req, res) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     res.send(info);
 });
-router.post('/', (_req, res) => {
-    res.send('Saving a patient!');
+router.post('/', (req, res) => {
+    const { name, dateOfBirth, ssn, gender, occupation } = req.body;
+    const newPatientEntry = patientService_1.default.addPatient({
+        name,
+        dateOfBirth,
+        ssn,
+        gender,
+        occupation
+    });
+    res.json(newPatientEntry);
 });
 exports.default = router;
