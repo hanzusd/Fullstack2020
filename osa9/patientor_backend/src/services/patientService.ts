@@ -1,4 +1,4 @@
-import patientData from '../../data/patients.json';
+import patientData from '../../data/patients';
 import { oldPatientEntry } from '../utils';
 import { v1 as uuid } from 'uuid';
 
@@ -25,6 +25,7 @@ const addPatient = ( entry: NewPatient ):Patient => {
   const id = uuid();
   const newPatient = {
     id: id,
+    entries: [],
     ...entry
   };
   patients.push(newPatient);

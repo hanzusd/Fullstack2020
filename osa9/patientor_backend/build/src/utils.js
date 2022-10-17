@@ -8,21 +8,20 @@ const toNewPatientEntry = ({ name, dateOfBirth, ssn, gender, occupation }) => {
         dateOfBirth: parseDate(dateOfBirth),
         ssn: parseSsn(ssn),
         gender: parseGender(gender),
-        occupation: parseOccupation(occupation) /* ,
-        entries: parseEntries(entries) */
+        occupation: parseOccupation(occupation)
     };
     return newPatient;
 };
 exports.toNewPatientEntry = toNewPatientEntry;
-const oldPatientEntry = ({ id, name, dateOfBirth, ssn, gender, occupation }) => {
+const oldPatientEntry = ({ id, name, dateOfBirth, ssn, gender, occupation, entries }) => {
     const oldPatient = {
         id: parseId(id),
         name: parseName(name),
         dateOfBirth: parseDate(dateOfBirth),
         ssn: parseSsn(ssn),
         gender: parseGender(gender),
-        occupation: parseOccupation(occupation) /* ,
-        entries: parseEntries(entries) */
+        occupation: parseOccupation(occupation),
+        entries: parseEntries(entries)
     };
     return oldPatient;
 };
@@ -63,12 +62,12 @@ const parseOccupation = (occupation) => {
     }
     return occupation;
 };
-/* const parseEntries = (entries: unknown): Array<Entry> => {
-  if (!entries || !isEntryArray(entries)) {
-    throw new Error('Incorrect or missing entry');
-  }
-  return entries;
-}; */
+const parseEntries = (entries) => {
+    if (!entries || !isEntryArray(entries)) {
+        throw new Error('Incorrect or missing entry');
+    }
+    return entries;
+};
 const isString = (text) => {
     return typeof text === 'string' || text instanceof String;
 };
@@ -80,6 +79,14 @@ const isGender = (param) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return Object.values(types_1.Gender).includes(param);
 };
-/* const isEntryArray = ( entries: unknown ): entries is Array<Entry> => {
-  return Boolean(Array(entries));
-}; */ 
+const isEntryArray = (entries) => {
+    if (!Array.isArray(entries)) {
+        return false;
+    }
+    for (const e of entries) {
+        if ((e.type !== 'Hospital') && (e.type !== 'OccupationalHealthcare') && (e.type !== 'HealthCheck')) {
+            return false;
+        }
+    }
+    return true;
+};
