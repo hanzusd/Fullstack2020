@@ -1,29 +1,29 @@
-import { NewPatient, Gender, Patient, Entry } from './types';
+import { NewPatient, Gender, Patient } from './types';
 
-type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries: unknown };
-type Fields2 = { id: unknown, name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries:unknown };
+type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown };
+type Fields2 = { id: unknown, name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown };
 
-export const toNewPatientEntry = ( {name, dateOfBirth, ssn, gender, occupation, entries}: Fields ): NewPatient => {
+export const toNewPatientEntry = ( {name, dateOfBirth, ssn, gender, occupation}: Fields ): NewPatient => {
   const newPatient: NewPatient = {
     name: parseName(name),
     dateOfBirth: parseDate(dateOfBirth),
     ssn: parseSsn(ssn),
     gender: parseGender(gender),
-    occupation: parseOccupation(occupation),
-    entries: parseEntries(entries)
+    occupation: parseOccupation(occupation)/* ,
+    entries: parseEntries(entries) */
   };
   return newPatient;
 };
 
-export const oldPatientEntry = ( {id, name, dateOfBirth, ssn, gender, occupation, entries}: Fields2 ): Patient => {
+export const oldPatientEntry = ( {id, name, dateOfBirth, ssn, gender, occupation}: Fields2 ): Patient => {
   const oldPatient: Patient = {
     id: parseId(id),
     name: parseName(name),
     dateOfBirth: parseDate(dateOfBirth),
     ssn: parseSsn(ssn),
     gender: parseGender(gender),
-    occupation: parseOccupation(occupation),
-    entries: parseEntries(entries)
+    occupation: parseOccupation(occupation)/* ,
+    entries: parseEntries(entries) */
   };
   return oldPatient;
 };
@@ -72,12 +72,12 @@ const parseOccupation = (occupation: unknown): string => {
   return occupation;
 };
 
-const parseEntries = (entries: unknown): Array<Entry> => {
+/* const parseEntries = (entries: unknown): Array<Entry> => {
   if (!entries || !isEntryArray(entries)) {
-    throw new Error('Incorrect or missing occupation');
+    throw new Error('Incorrect or missing entry');
   }  
   return entries;
-};
+}; */
   
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -93,6 +93,6 @@ const isGender = ( param:any ): param is Gender => {
   return Object.values(Gender).includes(param);
 };
 
-const isEntryArray = ( entries: unknown ): entries is Array<Entry> => {
+/* const isEntryArray = ( entries: unknown ): entries is Array<Entry> => {
   return Boolean(Array(entries));
-};
+}; */

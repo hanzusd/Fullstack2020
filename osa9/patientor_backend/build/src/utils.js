@@ -2,27 +2,27 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.oldPatientEntry = exports.toNewPatientEntry = void 0;
 const types_1 = require("./types");
-const toNewPatientEntry = ({ name, dateOfBirth, ssn, gender, occupation, entries }) => {
+const toNewPatientEntry = ({ name, dateOfBirth, ssn, gender, occupation }) => {
     const newPatient = {
         name: parseName(name),
         dateOfBirth: parseDate(dateOfBirth),
         ssn: parseSsn(ssn),
         gender: parseGender(gender),
-        occupation: parseOccupation(occupation),
-        entries: parseEntries(entries)
+        occupation: parseOccupation(occupation) /* ,
+        entries: parseEntries(entries) */
     };
     return newPatient;
 };
 exports.toNewPatientEntry = toNewPatientEntry;
-const oldPatientEntry = ({ id, name, dateOfBirth, ssn, gender, occupation, entries }) => {
+const oldPatientEntry = ({ id, name, dateOfBirth, ssn, gender, occupation }) => {
     const oldPatient = {
         id: parseId(id),
         name: parseName(name),
         dateOfBirth: parseDate(dateOfBirth),
         ssn: parseSsn(ssn),
         gender: parseGender(gender),
-        occupation: parseOccupation(occupation),
-        entries: parseEntries(entries)
+        occupation: parseOccupation(occupation) /* ,
+        entries: parseEntries(entries) */
     };
     return oldPatient;
 };
@@ -63,12 +63,12 @@ const parseOccupation = (occupation) => {
     }
     return occupation;
 };
-const parseEntries = (entries) => {
-    if (!entries || !isEntryArray(entries)) {
-        throw new Error('Incorrect or missing occupation');
-    }
-    return entries;
-};
+/* const parseEntries = (entries: unknown): Array<Entry> => {
+  if (!entries || !isEntryArray(entries)) {
+    throw new Error('Incorrect or missing entry');
+  }
+  return entries;
+}; */
 const isString = (text) => {
     return typeof text === 'string' || text instanceof String;
 };
@@ -80,6 +80,6 @@ const isGender = (param) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return Object.values(types_1.Gender).includes(param);
 };
-const isEntryArray = (entries) => {
-    return Boolean(Array(entries));
-};
+/* const isEntryArray = ( entries: unknown ): entries is Array<Entry> => {
+  return Boolean(Array(entries));
+}; */ 
