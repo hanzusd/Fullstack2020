@@ -1,6 +1,6 @@
 import express from 'express';
 import patientService from '../services/patientService';
-import toNewPatientEntry from '../utils';
+import { toNewPatientEntry } from '../utils';
 
 const router = express.Router();
 
@@ -24,6 +24,12 @@ router.post('/', (req, res) => {
     }
     res.status(400).send(errorMessage); 
   }
+});
+
+router.get('/:id', (req, res) => {
+  const patient = patientService.getPatient(req.params.id);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  res.send(patient);
 });
 
 export default router;

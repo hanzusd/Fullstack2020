@@ -1,17 +1,39 @@
-import { NewPatientEntry, Gender } from './types';
+import { NewPatient, Gender, Patient, Entry } from './types';
 
-type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown };
+type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries: unknown };
+type Fields2 = { id: unknown, name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries:unknown };
 
-const toNewPatientEntry = ( {name, dateOfBirth, ssn, gender, occupation}: Fields ): NewPatientEntry => {
-  const newPatient: NewPatientEntry = {
+export const toNewPatientEntry = ( {name, dateOfBirth, ssn, gender, occupation, entries}: Fields ): NewPatient => {
+  const newPatient: NewPatient = {
     name: parseName(name),
     dateOfBirth: parseDate(dateOfBirth),
     ssn: parseSsn(ssn),
     gender: parseGender(gender),
-    occupation: parseOccupation(occupation)
+    occupation: parseOccupation(occupation),
+    entries: parseEntries(entries)
   };
-
   return newPatient;
+};
+
+export const oldPatientEntry = ( {id, name, dateOfBirth, ssn, gender, occupation, entries}: Fields2 ): Patient => {
+  const oldPatient: Patient = {
+    id: parseId(id),
+    name: parseName(name),
+    dateOfBirth: parseDate(dateOfBirth),
+    ssn: parseSsn(ssn),
+    gender: parseGender(gender),
+    occupation: parseOccupation(occupation),
+    entries: parseEntries(entries)
+  };
+  return oldPatient;
+};
+
+const parseId = (id: unknown): string => {
+  if (!id || !isString(id)) {
+    throw new Error('Incorrect or missing id');
+  }
+  
+  return id;
 };
 
 const parseName = (name: unknown): string => {
@@ -49,6 +71,13 @@ const parseOccupation = (occupation: unknown): string => {
   }  
   return occupation;
 };
+
+const parseEntries = (entries: unknown): Array<Entry> => {
+  if (!entries || !isEntryArray(entries)) {
+    throw new Error('Incorrect or missing occupation');
+  }  
+  return entries;
+};
   
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -64,4 +93,6 @@ const isGender = ( param:any ): param is Gender => {
   return Object.values(Gender).includes(param);
 };
 
-export default toNewPatientEntry;
+const isEntryArray = ( entries: unknown ): entries is Array<Entry> => {
+  return Boolean(Array(entries));
+};

@@ -1,15 +1,37 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.oldPatientEntry = exports.toNewPatientEntry = void 0;
 const types_1 = require("./types");
-const toNewPatientEntry = ({ name, dateOfBirth, ssn, gender, occupation }) => {
+const toNewPatientEntry = ({ name, dateOfBirth, ssn, gender, occupation, entries }) => {
     const newPatient = {
         name: parseName(name),
         dateOfBirth: parseDate(dateOfBirth),
         ssn: parseSsn(ssn),
         gender: parseGender(gender),
-        occupation: parseOccupation(occupation)
+        occupation: parseOccupation(occupation),
+        entries: parseEntries(entries)
     };
     return newPatient;
+};
+exports.toNewPatientEntry = toNewPatientEntry;
+const oldPatientEntry = ({ id, name, dateOfBirth, ssn, gender, occupation, entries }) => {
+    const oldPatient = {
+        id: parseId(id),
+        name: parseName(name),
+        dateOfBirth: parseDate(dateOfBirth),
+        ssn: parseSsn(ssn),
+        gender: parseGender(gender),
+        occupation: parseOccupation(occupation),
+        entries: parseEntries(entries)
+    };
+    return oldPatient;
+};
+exports.oldPatientEntry = oldPatientEntry;
+const parseId = (id) => {
+    if (!id || !isString(id)) {
+        throw new Error('Incorrect or missing id');
+    }
+    return id;
 };
 const parseName = (name) => {
     if (!name || !isString(name)) {
@@ -41,6 +63,12 @@ const parseOccupation = (occupation) => {
     }
     return occupation;
 };
+const parseEntries = (entries) => {
+    if (!entries || !isEntryArray(entries)) {
+        throw new Error('Incorrect or missing occupation');
+    }
+    return entries;
+};
 const isString = (text) => {
     return typeof text === 'string' || text instanceof String;
 };
@@ -52,4 +80,6 @@ const isGender = (param) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return Object.values(types_1.Gender).includes(param);
 };
-exports.default = toNewPatientEntry;
+const isEntryArray = (entries) => {
+    return Boolean(Array(entries));
+};
