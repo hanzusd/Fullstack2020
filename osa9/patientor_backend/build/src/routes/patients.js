@@ -32,4 +32,18 @@ router.get('/:id', (req, res) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     res.send(patient);
 });
+router.post('/:id/entries', (req, res) => {
+    try {
+        const newEntry = (0, utils_1.toNewEntry)(req.body);
+        const newEntrySent = patientService_1.default.addEntry(req.params.id, newEntry);
+        res.status(200).send(newEntrySent);
+    }
+    catch (error) {
+        let errorMessage = 'Something went wrong.';
+        if (error instanceof Error) {
+            errorMessage += ' Error: ' + error.message;
+        }
+        res.status(400).send(errorMessage);
+    }
+});
 exports.default = router;

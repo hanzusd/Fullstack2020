@@ -26,6 +26,20 @@ const addPatient = (entry) => {
     patients.push(newPatient);
     return newPatient;
 };
+const addEntry = (patientId, entry) => {
+    let patient;
+    for (const p of patients) {
+        if (p.id === patientId) {
+            patient = p;
+            break;
+        }
+    }
+    if (!patient) {
+        throw new Error('Patient not found!');
+    }
+    patient.entries.push(entry);
+    return entry;
+};
 const getPatient = (id) => {
     for (let i = 0; i < patients.length; i++) {
         if (patients[i].id === id) {
@@ -38,5 +52,6 @@ exports.default = {
     getPatients,
     getNonSensitivePatientInfo,
     addPatient,
-    getPatient
+    getPatient,
+    addEntry
 };

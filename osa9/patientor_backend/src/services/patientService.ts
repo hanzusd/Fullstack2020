@@ -2,7 +2,7 @@ import patientData from '../../data/patients';
 import { oldPatientEntry } from '../utils';
 import { v1 as uuid } from 'uuid';
 
-import { NewPatient, NonSensitivePatientInfo, Patient  } from '../types';
+import { Entry, NewPatient, NonSensitivePatientInfo, Patient  } from '../types';
  
 const patients: Array<Patient> = patientData.map(patient => oldPatientEntry(patient));
 
@@ -32,6 +32,21 @@ const addPatient = ( entry: NewPatient ):Patient => {
   return newPatient;
 };
 
+const addEntry = ( patientId: string, entry:Entry ) => {
+  let patient:Patient | undefined;
+  for (const p of patients) {
+    if (p.id === patientId) {
+      patient = p;
+      break;
+    }
+  }
+  if (!patient) {
+    throw new Error('Patient not found!');
+  }
+  patient.entries.push(entry);
+  return entry;
+};
+
 const getPatient = ( id: string ): Patient => {
   for (let i = 0; i< patients.length; i++) {
     if(patients[i].id === id) {
@@ -45,5 +60,6 @@ export default {
   getPatients,
   getNonSensitivePatientInfo,
   addPatient,
-  getPatient
+  getPatient,
+  addEntry
 };

@@ -1,4 +1,5 @@
-import { NewPatient, Gender, Patient, Entry } from './types';
+import { NewPatient, Gender, Patient, Entry, BaseEntry, HospitalEntry, OccupationalHealthcareEntry, Diagnosis, HealthCheckEntry, HealthCheckRating } from './types';
+import { v1 as uuid } from 'uuid';
 
 type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown };
 type Fields2 = { id: unknown, name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries: unknown };
@@ -25,6 +26,14 @@ export const oldPatientEntry = ( {id, name, dateOfBirth, ssn, gender, occupation
     entries: parseEntries(entries)
   };
   return oldPatient;
+};
+
+export const toNewEntry = (data: any): Entry => {
+  data.id = uuid();
+  if (!isEntry(data)) {
+    throw new Error ('Incorrect or missing entry');
+  }
+  return data;
 };
 
 const parseId = (id: unknown): string => {
@@ -102,4 +111,77 @@ const isEntryArray = ( entries: unknown ): entries is Array<Entry> => {
     }
   }
   return true;
+};
+
+const isEntry = (data: unknown): data is Entry => {
+  return (isHospitalEntry(data) || isHealthCheckEntry(data) || isOccupationalHealthcareEntry(data));
+};
+
+const isDiagnosisCodeArray = (codes: any): codes is Array<Diagnosis['code']> => {
+  if (Array.isArray(codes)) {
+    for (const code of codes) {
+      if (!isString(code)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+};
+
+const isHealthCheckRating = (rating: any): rating is HealthCheckRating=> {
+  if (rating === HealthCheckRating.Healthy || rating === HealthCheckRating.LowRisk || rating === HealthCheckRating.HighRisk || rating === HealthCheckRating.CriticalRisk) {
+    return true;
+  }
+  return false;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isBaseEntry = ( entry:any ): entry is BaseEntry => {
+  if (isString(entry.id) && isString(entry.description) && isString(entry.date) && isString(entry.specialist) && (!entry.diagnosisCodes || isDiagnosisCodeArray(entry.diagnosisCodes))) {
+    return true;
+  }
+  return false;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isHospitalEntry = (data : any): data is HospitalEntry => {
+  if (data.type !== "Hospital") {
+    return false;
+  }
+  if (!data.discharge) {
+    return false;
+  }
+  if (isString(data.discharge.date) && isString(data.discharge.criteria)) {
+    return isBaseEntry(data);
+  }
+  return false;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isOccupationalHealthcareEntry = (data : any): data is OccupationalHealthcareEntry => {
+  if (data.type !== "OccupationalHealthcare") {
+    return false;
+  }
+  if (!data.employerName) {
+    return false;
+  }
+  if (!data.sickLeave || (isString(data.sickLeave.startDate) && isString(data.sickLeave.endDate))) {
+    return isBaseEntry(data);
+  }
+  return false;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isHealthCheckEntry = (data : any): data is HealthCheckEntry => {
+  if (data.type !== "HealthCheck") {
+    return false;
+  }
+  if (!data.healthCheckRating) {
+    return false;
+  }
+  if (isHealthCheckRating(data.healthCheckRating)) {
+    return isBaseEntry(data);
+  }
+  return false;
 };
